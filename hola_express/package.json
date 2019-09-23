@@ -1,0 +1,20 @@
+{
+  "name": "hola_express",
+  "version": "1.0.0",
+  "description": "Hola mundo con Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "Express"
+  ],
+  "author": "Abraham Serrano Montiel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jade": "^1.11.0",
+    "nodemon": "^1.19.2"
+  }
+}

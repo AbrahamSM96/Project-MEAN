@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title Mi primera pagina con express
+    body
+     - var arreglo = [1,2,3,4,5];
+     each item in arreglo
+        p= item
+        case item
+            when 1  
+                p el item era uno
+            when 2
+                p el item era 2
+            default 
+                p el item no era ni uno ni dos
