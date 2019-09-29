@@ -1,9 +1,11 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./models/user").User;
-var session = require("express-session");
+var cookieSession = require("cookie-session"); //sesiones guardadas en las cookies
 var router_app = require("./routes_app");
-var session_middleware = require("./middlewares/session")
+var session_middleware = require("./middlewares/session");
+var methodOverride = require("method-override"); // se instala para poder implementar en html el PUT y DELETE
+var formidable = require("express-form-data");
 
 var app = express();
 
@@ -14,19 +16,16 @@ app.use(bodyParser.urlencoded({extended: true})); // define con que algoritmo ha
 
 // /app/  <-- ruta app
 
-
 // /  <-- ruta / paginas que no requieran inicio de sesion
 
+app.use(methodOverride("_method"));
 
-app.use(session({
-    secret: "123qwerty123", //identificador para nuestra session unico
-    resave: false, // true: la sesion se vuelve a guardar aunque no haya sido modificada mediante el proceso de la peticion
-                // cuando dos usuarios intentan acceder de manera paralela y se contaminan las sesiones
-    saveUninitialized:false  //indica si la sesion debe de guardarse aun si no esta inicializada
-    //genid: function(req){ //id unico para la sessio
-    //}
+app.use(cookieSession({
+    name: "session",
+keys: ["llave-1", "llave-2"]
 }));
 
+app.use(formidable.parse({ keepExtensions: true}));
 
 app.set("view engine", "jade");
 
@@ -62,7 +61,7 @@ app.post("/users", function(req,res){
     res.send("guardamos tus datos");
   });    
 
-  user.save().then(function(us){ // es un promesa para saber si guardo o no los datos
+  user.save().then(function(user){ // es un promesa para saber si guardo o no los datos
     res.send("Guardamos el usuario exitosamente"); //se ejecuta si todo salio bien
   }, function(err){
       if(err){ // se ejecuta si algo salio mal
@@ -80,13 +79,12 @@ app.post("/sessions", function(req,res){
     User.findOne({email: req.body.email, password: req.body.password}, function(err,user){ // Con este metodo recogo los datos guardados
                                                                                             //para poder iniciar secion
         req.session.user_id = user._id; // _i es el id que mongo le asigna al documento para identificarlo en la base de datoss
-        res.send("Hola perro")
+        res.redirect("/app") //redirecciona
     });
 });
 
-
-app.use("/app", router_app);
 app.use("/app", session_middleware)
+app.use("/app", router_app);
 
 
 app.listen(8080);
