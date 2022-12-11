@@ -13,7 +13,7 @@
   "author": "Abraham Serrano Montiel",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jade": "^1.11.0",
     "nodemon": "^1.19.2"
   }
